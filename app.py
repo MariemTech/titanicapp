@@ -33,6 +33,28 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+/* Slider personalizado */
+input[type=range]::-webkit-slider-thumb {
+    background: #0097b2;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background: #f9a620;
+    height: 0.5rem;
+    border-radius: 8px;
+}
+
+/* Firefox */
+input[type=range]::-moz-range-thumb {
+    background: #0097b2;
+}
+
+input[type=range]::-moz-range-track {
+    background: #f9a620;
+    height: 0.5rem;
+    border-radius: 8px;
+}
+
 # Cargar datos
 df = pd.read_csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
 
