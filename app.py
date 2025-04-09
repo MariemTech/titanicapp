@@ -30,24 +30,26 @@ st.markdown("""
             background-color: #f9a620;
             color: black;
         }
-        /* Slider personalizado */
-        input[type=range]::-webkit-slider-thumb {
-            background: #0097b2;
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            background: #f9a620;
-            height: 8px;
-            border-radius: 8px;
-        }
-        input[type=range]::-moz-range-thumb {
-            background: #0097b2;
-        }
-        input[type=range]::-moz-range-track {
-            background: #f9a620;
-            height: 8px;
-            border-radius: 8px;
-        }
     </style>
+
+    <!-- Usamos JavaScript para modificar el color del slider -->
+    <script>
+        const sliders = document.querySelectorAll('.stSlider input[type="range"]');
+        sliders.forEach(slider => {
+            slider.style.backgroundColor = "#f9a620";  // Fondo del slider
+            slider.style.height = "8px";  // Altura del slider
+            slider.style.borderRadius = "8px";  // Bordes redondeados
+        });
+
+        const thumbs = document.querySelectorAll('.stSlider input[type="range"]::-webkit-slider-thumb');
+        thumbs.forEach(thumb => {
+            thumb.style.backgroundColor = "#0097b2";  // Color del círculo
+            thumb.style.border = "2px solid white";  // Borde blanco
+            thumb.style.width = "20px";  // Tamaño del círculo
+            thumb.style.height = "20px";  // Tamaño del círculo
+            thumb.style.borderRadius = "50%";  // Hacerlo redondo
+        });
+    </script>
 """, unsafe_allow_html=True)
 
 # Cargar datos
