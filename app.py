@@ -6,49 +6,49 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.impute import SimpleImputer
 import janitor
 
-# Personalización de colores en Streamlit
+# Personalización de la página
 st.set_page_config(page_title="¿Sobrevivirías al Titanic?", page_icon="🛳️", layout="centered")
 
 # Cargar datos
 df = pd.read_csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
 
-# Limpieza con Janitor
-df = df.clean_names()  # Limpia los nombres de las columnas
+# Limpieza de nombres de columnas
+df = df.clean_names()
 
-# Usando SimpleImputer para manejar los valores faltantes de manera más efectiva
-imputer = SimpleImputer(strategy="most_frequent")  # Imputación de moda para 'Embarked'
-df["age"] = imputer.fit_transform(df[["age"]])
-df["embarked"] = imputer.fit_transform(df[["embarked"]])
+# Imputación de datos faltantes
+imputer = SimpleImputer(strategy="most_frequent")
+df["age"] = imputer.fit_transform(df[["age"]]).ravel()
+df["embarked"] = imputer.fit_transform(df[["embarked"]]).ravel()
 
-# Filtrar columnas innecesarias
-df.drop(columns=["cabin", "ticket", "name", "passengerid"], inplace=True)
+# Eliminar columnas innecesarias
+df.drop(columns=["cabin", "ticket", "name", "passenger_id"], inplace=True)
 
-# Codificar variables
+# Codificación de variables categóricas
 df["sex"] = df["sex"].map({"male": 0, "female": 1})
-df["embarked"] = df["embarked"].map({"s": 0, "c": 1, "q": 2})
+df["embarked"] = df["embarked"].map({"S": 0, "C": 1, "Q": 2})
 
-# Definir variables
+# Definir variables predictoras y objetivo
 X = df.drop("survived", axis=1)
 y = df["survived"]
 
-# Modelo
+# Modelo de árbol de decisión
 modelo = DecisionTreeClassifier(random_state=42)
 modelo.fit(X, y)
 
-# Streamlit App
+# Interfaz de usuario
 st.title("¿Sobrevivirías al Titanic? 🛳️")
-st.write("Ingresa tus datos para predecir si sobrevivirías")
+st.write("Ingresa tus datos para predecir si habrías sobrevivido.")
 
 # Entradas del usuario
-pclass = st.selectbox("Clase del pasajero (1 = Primera, 2 = Segunda, 3 = Tercera)", [1, 2, 3], key="pclass")
-sex = st.selectbox("Sexo", ["Hombre", "Mujer"], key="sex")
-age = st.slider("Edad", 0, 80, 30, key="age")
-sibsp = st.number_input("Hermanos/cónyuge a bordo", 0, 10, 0, key="sibsp")
-parch = st.number_input("Padres/hijos a bordo", 0, 10, 0, key="parch")
-fare = st.slider("Tarifa del billete (£)", 0.0, 600.0, 50.0, key="fare")
-embarked = st.selectbox("Puerto de embarque", ["Southampton", "Cherbourg", "Queenstown"], key="embarked")
+pclass = st.selectbox("Clase del pasajero (1 = Primera, 2 = Segunda, 3 = Tercera)", [1, 2, 3])
+sex = st.selectbox("Sexo", ["Hombre", "Mujer"])
+age = st.slider("Edad", 0, 80, 30)
+sibsp = st.number_input("Hermanos/cónyuge a bordo", 0, 10, 0)
+parch = st.number_input("Padres/hijos a bordo", 0, 10, 0)
+fare = st.slider("Tarifa del billete (£)", 0.0, 600.0, 50.0)
+embarked = st.selectbox("Puerto de embarque", ["Southampton", "Cherbourg", "Queenstown"])
 
-# Procesar inputs
+# Preprocesamiento de entrada del usuario
 sexo_cod = 0 if sex == "Hombre" else 1
 embarked_cod = {"Southampton": 0, "Cherbourg": 1, "Queenstown": 2}[embarked]
 
@@ -58,6 +58,8 @@ pasajero = pd.DataFrame([[pclass, sexo_cod, age, sibsp, parch, fare, embarked_co
 
 # Predicción
 pred = modelo.predict(pasajero)[0]
+
+# Mostrar resultado
 st.subheader("Resultado:")
 if pred == 1:
     st.markdown('<p style="color:green; font-size: 24px;">🎉 ¡Sobrevivirías!</p>', unsafe_allow_html=True)
