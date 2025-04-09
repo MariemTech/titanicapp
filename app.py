@@ -8,6 +8,30 @@ import janitor
 
 # Personalización de la página
 st.set_page_config(page_title="¿Sobrevivirías al Titanic?", page_icon="🛳️", layout="centered")
+st.markdown("""
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+        .main {
+            background-color: #f5f5f5;
+        }
+        h1, h2, h3, h4 {
+            color: #0097b2;
+        }
+        .stButton>button {
+            background-color: #0097b2;
+            color: white;
+            border-radius: 8px;
+            padding: 0.5em 1em;
+            font-weight: bold;
+        }
+        .stButton>button:hover {
+            background-color: #f9a620;
+            color: black;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Cargar datos
 df = pd.read_csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
@@ -21,7 +45,7 @@ df["age"] = imputer.fit_transform(df[["age"]]).ravel()
 df["embarked"] = imputer.fit_transform(df[["embarked"]]).ravel()
 
 # Eliminar columnas innecesarias
-df.drop(columns=["cabin", "ticket", "name", "passenger_id"], inplace=True)
+df.drop(columns=["cabin", "ticket", "name", "passengerid"], inplace=True)
 
 # Codificación de variables categóricas
 df["sex"] = df["sex"].map({"male": 0, "female": 1})
@@ -43,8 +67,8 @@ st.write("Ingresa tus datos para predecir si habrías sobrevivido.")
 pclass = st.selectbox("Clase del pasajero (1 = Primera, 2 = Segunda, 3 = Tercera)", [1, 2, 3])
 sex = st.selectbox("Sexo", ["Hombre", "Mujer"])
 age = st.slider("Edad", 0, 80, 30)
-sibsp = st.number_input("Hermanos/cónyuge a bordo", 0, 10, 0)
-parch = st.number_input("Padres/hijos a bordo", 0, 10, 0)
+sibsp = st.number_input("Cónyuge y/o Hermanos a bordo", 0, 10, 0)
+parch = st.number_input("Padres y/o hijos a bordo", 0, 10, 0)
 fare = st.slider("Tarifa del billete (£)", 0.0, 600.0, 50.0)
 embarked = st.selectbox("Puerto de embarque", ["Southampton", "Cherbourg", "Queenstown"])
 
