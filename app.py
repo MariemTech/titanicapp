@@ -30,30 +30,25 @@ st.markdown("""
             background-color: #f9a620;
             color: black;
         }
+        /* Slider personalizado */
+        input[type=range]::-webkit-slider-thumb {
+            background: #0097b2;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            background: #f9a620;
+            height: 8px;
+            border-radius: 8px;
+        }
+        input[type=range]::-moz-range-thumb {
+            background: #0097b2;
+        }
+        input[type=range]::-moz-range-track {
+            background: #f9a620;
+            height: 8px;
+            border-radius: 8px;
+        }
     </style>
 """, unsafe_allow_html=True)
-
-/* Slider personalizado */
-input[type=range]::-webkit-slider-thumb {
-    background: #0097b2;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    background: #f9a620;
-    height: 0.5rem;
-    border-radius: 8px;
-}
-
-/* Firefox */
-input[type=range]::-moz-range-thumb {
-    background: #0097b2;
-}
-
-input[type=range]::-moz-range-track {
-    background: #f9a620;
-    height: 0.5rem;
-    border-radius: 8px;
-}
 
 # Cargar datos
 df = pd.read_csv("https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv")
