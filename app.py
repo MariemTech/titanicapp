@@ -17,19 +17,19 @@ df = df.clean_names()  # Limpia los nombres de las columnas
 
 # Usando SimpleImputer para manejar los valores faltantes de manera más efectiva
 imputer = SimpleImputer(strategy="most_frequent")  # Imputación de moda para 'Embarked'
-df["Age"] = imputer.fit_transform(df[["Age"]])
-df["Embarked"] = imputer.fit_transform(df[["Embarked"]])
+df["age"] = imputer.fit_transform(df[["age"]])
+df["embarked"] = imputer.fit_transform(df[["embarked"]])
 
 # Filtrar columnas innecesarias
-df.drop(columns=["Cabin", "Ticket", "Name", "PassengerId"], inplace=True)
+df.drop(columns=["cabin", "ticket", "name", "passengerid"], inplace=True)
 
 # Codificar variables
-df["Sex"] = df["Sex"].map({"male": 0, "female": 1})
-df["Embarked"] = df["Embarked"].map({"S": 0, "C": 1, "Q": 2})
+df["sex"] = df["sex"].map({"male": 0, "female": 1})
+df["embarked"] = df["embarked"].map({"s": 0, "c": 1, "q": 2})
 
 # Definir variables
-X = df.drop("Survived", axis=1)
-y = df["Survived"]
+X = df.drop("survived", axis=1)
+y = df["survived"]
 
 # Modelo
 modelo = DecisionTreeClassifier(random_state=42)
@@ -54,7 +54,7 @@ embarked_cod = {"Southampton": 0, "Cherbourg": 1, "Queenstown": 2}[embarked]
 
 # Crear dataframe del pasajero
 pasajero = pd.DataFrame([[pclass, sexo_cod, age, sibsp, parch, fare, embarked_cod]],
-                        columns=["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"])
+                        columns=["pclass", "sex", "age", "sibsp", "parch", "fare", "embarked"])
 
 # Predicción
 pred = modelo.predict(pasajero)[0]
@@ -63,4 +63,3 @@ if pred == 1:
     st.markdown('<p style="color:green; font-size: 24px;">🎉 ¡Sobrevivirías!</p>', unsafe_allow_html=True)
 else:
     st.markdown('<p style="color:red; font-size: 24px;">😢 No sobrevivirías...</p>', unsafe_allow_html=True)
-
